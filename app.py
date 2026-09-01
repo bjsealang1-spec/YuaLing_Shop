@@ -42,7 +42,7 @@ st.markdown("""
 # 1. PyTorch CNN 모델 정의 (FashionCNN)
 # ---------------------------------------------------------
 class FashionCNN(nn.Module):
-    def __init__(self, num_classes=5):
+    def __init__(self, num_classes=6):
         super(FashionCNN, self).__init__()
         self.layer1 = nn.Sequential(
             nn.Conv2d(3, 16, kernel_size=3, stride=1, padding=1),
@@ -63,7 +63,7 @@ class FashionCNN(nn.Module):
         out = self.fc(out)
         return out
 
-class_names = ["원피스", "스커트", "팬츠", "블라우스", "비키니/바캉스"]
+class_names = ["원피스", "스커트", "팬츠", "블라우스", "비키니/바캉스", "스타킹/양말"]
 
 @st.cache_resource
 def load_trained_model():
@@ -84,7 +84,7 @@ transform = transforms.Compose([
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 if 'user_name' not in st.session_state:
-    st.session_state.user_name = "유아"
+    st.session_state.user_name = "여니"
 if 'wishlist' not in st.session_state:
     st.session_state.wishlist = []
 if 'cart' not in st.session_state:
@@ -185,7 +185,34 @@ if 'products_db' not in st.session_state:
         "심플 베이직 비키니": {"price": 38000, "category": "비키니/바캉스", "rating": 4.6, "desc": "유행을 타지 않는 깔끔한 디자인으로 질리지 않는 베이직 비키니", "reviews": [{"text": "기본이라 오히려 손이 자주 가요.", "star": 5}]},
         "셔링 포인트 브이넥 모노키니": {"price": 46000, "category": "비키니/바캉스", "rating": 4.9, "desc": "가슴 라인 셔링으로 볼륨감을 더해주는 페미닌한 모노키니", "reviews": [{"text": "라인 정말 예쁘게 잡아줍니다.", "star": 5}]},
         "플로럴 오프숄더 비치 원피스": {"price": 42000, "category": "비키니/바캉스", "rating": 4.7, "desc": "어깨를 드러내어 청순 섹시미를 극대화해주는 플로럴 비치 원피스", "reviews": [{"text": "휴가철 여신룩 완성이에요.", "star": 5}]},
-        "네온 컬러 포인트 비키니": {"price": 41000, "category": "비키니/바캉스", "rating": 4.7, "desc": "태닝한 피부와 완벽하게 어우러지는 핫한 네온 컬러 비키니", "reviews": [{"text": "시선 집중용으로 최고입니다!", "star": 5}]}
+        "네온 컬러 포인트 비키니": {"price": 41000, "category": "비키니/바캉스", "rating": 4.7, "desc": "태닝한 피부와 완벽하게 어우러지는 핫한 네온 컬러 비키니", "reviews": [{"text": "시선 집중용으로 최고입니다!", "star": 5}]},
+
+        # --- 스타킹/양말 라인 (25개 추가) ---
+        "실크 투명 블랙 시스루 스타킹": {"price": 6000, "category": "스타킹/양말", "rating": 4.9, "desc": "다리 라인이 은은하게 비치며 매끈하게 보정해 주는 데일리 블랙 시스루 스타킹", "reviews": [{"text": "올도 잘 안 나가고 다리 엄청 예뻐 보여요 ✨", "star": 5}]},
+        "각선미 압박 보정 블랙 스타킹": {"price": 9000, "category": "스타킹/양말", "rating": 5.0, "desc": "탱탱하게 군살을 꽉 잡아주어 슬림한 레그라인을 완성해 주는 고탄력 압박 스타킹", "reviews": [{"text": "신을 때 쫀쫀하고 다리가 붓지 않아요!", "star": 5}]},
+        "꾸안꾸 무릎위 반스타킹 (블랙)": {"price": 5000, "category": "스타킹/양말", "rating": 4.8, "desc": "스커트나 교복룩에 매치하기 좋은 귀엽고 스포티한 무드의 블랙 반스타킹(니삭스)", "reviews": [{"text": "흘러내리지 않고 짱짱해서 좋아요.", "side": 5}]},
+        "골지 면 니트 반스타킹 (아이보리)": {"price": 5500, "category": "스타킹/양말", "rating": 4.7, "desc": "따뜻하고 포근한 골지 짜임으로 가을겨울 감성 코디 필수템 니삭스", "reviews": [{"text": "메리제인 슈즈랑 신으면 대존예입니다.", "star": 5}]},
+        "섹시 힙업 백시어리스 스타킹": {"price": 11000, "category": "스타킹/양말", "rating": 4.9, "desc": "뒤쪽 라인 포인트로 유니크하고 아찔한 분위기를 연출해 주는 백세임 스타킹", "reviews": [{"text": "뒤태 포인트가 진짜 매력 있어요.", "star": 5}]},
+        "겨울용 피치 기모 덧댄 타이즈": {"price": 12000, "category": "스타킹/양말", "rating": 5.0, "desc": "겉보기엔 살색 시스루지만 안감은 포근한 기모로 한겨울에도 따뜻한 가짜 살색 타이즈", "reviews": [{"text": "겨울 구원투수템 ㅠㅠ 한겨울에도 원피스 가능!", "star": 5}]},
+        "러블리 레이스 프릴 반스타킹": {"price": 6500, "category": "스타킹/양말", "rating": 4.8, "desc": "발목 윗부분에 사랑스러운 레이스 프릴이 더해진 로맨틱 무드 니삭스", "reviews": [{"text": "치마랑 신었을 때 소녀 감성 폭발해요.", "star": 5}]},
+        "시크 심플 무지 발목 양말 (블랙)": {"price": 3000, "category": "스타킹/양말", "rating": 4.6, "desc": "어떤 스니커즈에나 찰떡같이 어울리는 베이직 블랙 숏 삭스", "reviews": [{"text": "가성비 좋고 쫀쫀해서 대량구매 각.", "star": 5}]},
+        "파스텔 라벤더 컬러 발목 양말": {"price": 3500, "category": "스타킹/양말", "rating": 4.8, "desc": "유아링샵 시그니처 감성을 담은 여리여리 화사한 라벤더 컬러 양말", "reviews": [{"text": "색감이 너무 고와서 포인트로 딱이에요 💜", "star": 5}]},
+        "망사 시스루 섹시 네트 스타킹": {"price": 7000, "category": "스타킹/양말", "rating": 4.7, "desc": "유니크한 스트리트 힙합룩이나 파티룩에 포인트 주기 좋은 네트 망사 스타킹", "reviews": [{"text": "힙한 느낌 내고 싶을 때 최고!", "star": 5}]},
+        "도트 패턴 시스루 패션 타이즈": {"price": 8000, "category": "스타킹/양말", "rating": 4.9, "desc": "귀여운 도트 물방울 패턴이 콕콕 박혀 있어 심플한 원피스에 포인트 주기 좋은 타이즈", "reviews": [{"text": "다리 심심할 때 신어주면 완전 포인트 돼요.", "star": 5}]},
+        "하이웨이스트 쫀쫀 판탈롱 스타킹 (5개 세트)": {"price": 15000, "category": "스타킹/양말", "rating": 4.9, "desc": "흘러내림 걱정없이 배까지 편안하게 감싸주는 가성비 갑 판탈롱 스타킹 묶음", "reviews": [{"text": "쟁여두고 신기 너무 편하고 좋아요.", "star": 5}]},
+        "스트라이프 스포티 니삭스": {"price": 5500, "category": "스타킹/양말", "rating": 4.7, "desc": "두 줄 스트라이프 배색으로 하이틴 체육복이나 테니스룩에 어울리는 반스타킹", "reviews": [{"text": "발랄해 보이고 다리도 길어 보여요.", "star": 5}]},
+        "커피색 내추럴 스킨 스타킹": {"price": 5000, "category": "스타킹/양말", "rating": 4.8, "desc": "내추럴하고 자연스러운 살구톤으로 정장이나 승무원 룩에 필수인 스킨 스타킹", "reviews": [{"text": "색상이 인위적이지 않고 자연스러워요.", "star": 5}]},
+        "토탈 릴렉스 발가락 양말": {"price": 4000, "category": "스타킹/양말", "rating": 4.5, "desc": "발가락 사이사이 땀 흡수와 편안함을 극대화해 주는 기능성 토삭스", "reviews": [{"text": "엄청 편하고 쾌적합니다 ㅎㅎ", "star": 5}]},
+        "벨벳 리본 포인트 블랙 반스타킹": {"price": 7500, "category": "스타킹/양말", "rating": 4.9, "desc": "종아리 옆쪽에 고급스러운 벨벳 리본이 달려있는 러블리 니삭스", "reviews": [{"text": "실물로 보면 리본이 진짜 고급져요.", "star": 5}]},
+        "무릎 위 오버니삭스 (그레이)": {"price": 6000, "category": "스타킹/양말", "rating": 4.8, "desc": "다리를 포근하게 감싸주면서 슬림하게 만들어주는 그레이 컬러 오버니삭스", "reviews": [{"text": "따뜻하고 핏이 일자로 이쁘게 떨어져요.", "star": 5}]},
+        "자외선 차단 쿨링 덧신 양말": {"price": 3500, "category": "스타킹/양말", "rating": 4.7, "desc": "로퍼나 스니커즈 신을 때 절대 벗겨지지 않는 실리콘 덧신", "reviews": [{"text": "진짜 절대 안 벗겨져서 인생 덧신이에요!", "star": 5}]},
+        "체크 패턴 포인트 패션 미들삭스": {"price": 4500, "category": "스타킹/양말", "rating": 4.6, "desc": "클래식한 체크 패턴으로 로퍼나 워커에 신기 좋은 미들 삭스", "reviews": [{"text": "포인트 주기 은근히 좋아요.", "star": 5}]},
+        "레오파트 호피 패턴 시스루 타이즈": {"price": 8500, "category": "스타킹/양말", "rating": 4.7, "desc": "과감하면서도 매혹적인 호피 패턴으로 스타일리시함을 뽐내는 타이즈", "reviews": [{"text": "유니크한 코디 할 때 대박입니다.", "star": 5}]},
+        "발레코어 리본 스트랩 타이즈": {"price": 9500, "category": "스타킹/양말", "rating": 5.0, "desc": "발레리나 감성의 스트랩 리본 디테일이 살아있는 청순 발랄 시스루 타이즈", "reviews": [{"text": "요즘 트렌드 그 자체! 너무 예뻐요.", "star": 5}]},
+        "논슬립 요가 필라테스 토삭스": {"price": 6000, "category": "스타킹/양말", "rating": 4.8, "desc": "바닥면에 미끄럼 방지 실리콘 처리가 되어 운동할 때 안전한 전용 양말", "reviews": [{"text": "필라테스 할 때 요거만 신어요.", "star": 5}]},
+        "브이컷 스판 승무원 스타킹": {"price": 6000, "category": "스타킹/양말", "rating": 4.8, "desc": "오랫동안 서 있어도 다리가 편안하도록 설계된 고탄력 프리미엄 스타킹", "reviews": [{"text": "근무할 때 신기 아주 튼튼하고 좋아요.", "star": 5}]},
+        "알록달록 스마일 자수 미들삭스": {"price": 4000, "category": "스타킹/양말", "rating": 4.7, "desc": "귀여운 스마일 자수가 콕 박혀 있어 기분까지 좋아지는 캐주얼 패션 양말", "reviews": [{"text": "신을 때마다 기분이 좋아져요 💛", "star": 5}]},
+        "소프트 수면 털 양말 세트": {"price": 7000, "category": "스타킹/양말", "rating": 4.9, "desc": "원룸텔이나 집에서 잠잘 때 발을 따뜻하게 지켜주는 극세사 수면 양말", "reviews": [{"text": "수면 양말 이거 없으면 겨울 못 나요 극락 푹신함", "star": 5}]}
     }
 
 def generate_free_fashion_styling(predicted_category):
@@ -206,7 +233,7 @@ def predict_fashion_image(img):
 # ---------------------------------------------------------
 st.sidebar.markdown("# 💜 YuaLing Shop")
 if not st.session_state.logged_in:
-    input_name = st.sidebar.text_input("닉네임을 입력하세요", value="유아", key="sidebar_input_name")
+    input_name = st.sidebar.text_input("닉네임을 입력하세요", value="여니", key="sidebar_input_name")
     if st.sidebar.button("로그인하기", key="sidebar_login_btn"):
         st.session_state.logged_in = True
         st.session_state.user_name = input_name
@@ -319,7 +346,7 @@ else:
                     st.rerun()
 
         else:
-            categories = ["전체", "원피스", "블라우스", "스커트", "팬츠/아우터", "비키니/바캉스"]
+            categories = ["전체", "원피스", "블라우스", "스커트", "팬츠/아우터", "비키니/바캉스", "스타킹/양말"]
             selected_cat = st.selectbox("원하는 카테고리를 선택해 보세요 ✨", categories, key="home_cat_select")
 
             if selected_cat == "전체":
@@ -338,7 +365,7 @@ else:
                         st.session_state.selected_product = item_name
                         st.rerun()
 
-            # --- [✨ 에이블리 감성 퀵 링크 섹션 추가] ---
+            # --- [에이블리 감성 퀵 링크 섹션] ---
             st.markdown("---")
             st.markdown("### ⚡ YuaLing 퀵 바로가기 메뉴")
             
@@ -432,7 +459,7 @@ else:
         st.title("👑 YuaLing 대표님 상품 등록실")
         new_p_name = st.text_input("상품 이름", key="reg_name_input")
         new_p_price = st.number_input("가격", value=35000, key="reg_price_input")
-        new_p_cat = st.selectbox("카테고리", ["원피스", "블라우스", "비키니/바캉스", "스커트", "팬츠/아우터"], key="reg_cat_select")
+        new_p_cat = st.selectbox("카테고리", ["원피스", "블라우스", "비키니/바캉스", "스커트", "팬츠/아우터", "스타킹/양말"], key="reg_cat_select")
         new_p_desc = st.text_area("설명", key="reg_desc_input")
         if st.button("🚀 신상 등록하기", key="reg_submit_btn"):
             st.session_state.products_db[new_p_name] = {"price": new_p_price, "category": new_p_cat, "rating": 5.0, "desc": new_p_desc, "reviews": []}
