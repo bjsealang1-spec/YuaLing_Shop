@@ -1,0 +1,19 @@
+names:
+- Bodice
+- Hemline
+- Neckline
+- Pantleg
+- Skirt
+- Sleeve
+- Sleeveline
+- Waistline
+nc: 8
+roboflow:
+  license: CC BY 4.0
+  project: fashion-ytn2z-f0yfz
+  url: https://universe.roboflow.com/yeoni/fashion-ytn2z-f0yfz/dataset/1
+  version: 1
+  workspace: yeoni
+test: ../test/images
+train: ../train/images
+val: ../valid/images
